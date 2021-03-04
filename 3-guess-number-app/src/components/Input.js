@@ -11,8 +11,14 @@ const styles = StyleSheet.create({
   },
 });
 
-const Input = ({ style, ...rest }) => {
-  return <TextInput {...rest} style={{ ...styles.input, ...style }} />;
+const Input = ({ style, handleOnChange, ...rest }) => {
+  return (
+    <TextInput
+      {...rest}
+      onChangeText={handleOnChange}
+      style={{ ...styles.input, ...style }}
+    />
+  );
 };
 
 export default Input;
