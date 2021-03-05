@@ -1,8 +1,8 @@
 import React from 'react';
-import { Button, View, Text, StyleSheet } from 'react-native';
+import { Button, View, StyleSheet } from 'react-native';
 
 import { ScreenContainer } from './../containers';
-import { Card } from './../components';
+import { Card, Title, BodyText } from './../components';
 import colors from './../constants/colors';
 
 const styles = StyleSheet.create({
@@ -10,10 +10,6 @@ const styles = StyleSheet.create({
     width: 300,
     maxWidth: '80%',
     alignItems: 'center',
-  },
-  title: {
-    fontSize: 24,
-    marginVertical: 16,
   },
   valueLabel: {
     fontSize: 40,
@@ -31,11 +27,16 @@ const styles = StyleSheet.create({
   },
 });
 
-const ConfirmScreen = ({ value, handleConfirmValue, handleResetValue }) => (
+const ConfirmScreen = ({
+  selectedValue,
+  handleConfirmValue,
+  handleResetValue,
+}) => (
   <ScreenContainer>
-    <Text style={styles.title}>Are you sure?</Text>
+    <Title>Are you sure?</Title>
+
     <Card style={styles.cardContainer}>
-      <Text style={styles.valueLabel}>{value}</Text>
+      <BodyText style={styles.valueLabel}>{selectedValue}</BodyText>
       <View style={styles.buttonContainer}>
         <View style={styles.button}>
           <Button
@@ -48,7 +49,7 @@ const ConfirmScreen = ({ value, handleConfirmValue, handleResetValue }) => (
         </View>
         <View style={styles.button}>
           <Button
-            title='Cancel'
+            title='Try again'
             color={colors.secondary}
             onPress={() => {
               handleResetValue();

@@ -2,14 +2,10 @@ import React from 'react';
 import { Button, View, Text, StyleSheet, Keyboard } from 'react-native';
 
 import { ScreenContainer } from './../containers';
-import { Card, Input } from './../components';
+import { Card, Input, Title, BodyText } from './../components';
 import colors from './../constants/colors';
 
 const styles = StyleSheet.create({
-  title: {
-    fontSize: 24,
-    marginVertical: 16,
-  },
   inputContainer: {
     width: 300,
     maxWidth: '80%',
@@ -35,10 +31,10 @@ const StartGameScreen = ({ handleValueSelect }) => {
 
   return (
     <ScreenContainer>
-      <Text style={styles.title}>Start a New Game!</Text>
+      <Title>Start a New Game!</Title>
 
       <Card style={styles.inputContainer}>
-        <Text>Select a Number</Text>
+        <BodyText>Select a Number</BodyText>
         <Input
           style={styles.input}
           autoCorrect={false}
