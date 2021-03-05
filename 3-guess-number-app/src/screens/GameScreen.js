@@ -1,5 +1,5 @@
 import React from 'react';
-import { Alert, View, StyleSheet } from 'react-native';
+import { Alert, View, StyleSheet, FlatList } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 
 import { ScreenContainer } from './../containers';
@@ -22,6 +22,18 @@ const styles = StyleSheet.create({
   button: {
     width: 100,
     marginTop: 16,
+  },
+  listContainer: {
+    flex: 1,
+    width: '100%',
+    paddingVertical: 16,
+  },
+  list: {
+    flexGrow: 1,
+  },
+  listItem: {
+    marginVertical: 16,
+    alignItems: 'center',
   },
 });
 
@@ -107,6 +119,34 @@ const GameScreen = ({
           </View>
         </View>
       </Card>
+
+      <View style={styles.listContainer}>
+        {/* <ScrollView contentContainerStyle={styles.list}>
+          {guesses.map((guess, index) => (
+            <View key={`${index}-${guess}`} style={styles.listItem}>
+              <BodyText>
+                #{index + 1} - {guess}
+              </BodyText>
+            </View>
+          ))}
+        </ScrollView> */}
+        <FlatList
+          data={guesses.map((guess, index) => ({
+            key: `${index}-${guess}`,
+            item: { round: index + 1, value: guess },
+          }))}
+          contentContainerStyle={styles.list}
+          renderItem={({ item }) => {
+            return (
+              <View key={item.key} style={styles.listItem}>
+                <BodyText>
+                  #{item.item.round} - {item.item.value}
+                </BodyText>
+              </View>
+            );
+          }}
+        />
+      </View>
     </ScreenContainer>
   );
 };
