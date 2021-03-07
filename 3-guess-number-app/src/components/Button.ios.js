@@ -21,11 +21,13 @@ const styles = StyleSheet.create({
 
 const Button = ({ title, onPress }) => {
   return (
-    <TouchableOpacity onPress={onPress} activeOpacity={0.6}>
-      <View style={styles.buttonContainer}>
-        <Text style={styles.buttonTitle}>{title}</Text>
-      </View>
-    </TouchableOpacity>
+    <View style={styles.buttonWrapper}>
+      <TouchableOpacity onPress={onPress} activeOpacity={0.6}>
+        <View style={styles.buttonContainer}>
+          <Text style={styles.buttonTitle}>{title}</Text>
+        </View>
+      </TouchableOpacity>
+    </View>
   );
 };
 

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, View, StyleSheet } from 'react-native';
+import { Button, View, StyleSheet, Dimensions } from 'react-native';
 
 import { ScreenContainer } from './../containers';
 import { Card, Title, BodyText } from './../components';
@@ -12,7 +12,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   valueLabel: {
-    fontSize: 40,
+    fontSize: Dimensions.get('window').height > 600 ? 24 : 16,
     marginTop: 16,
     textAlign: 'center',
   },

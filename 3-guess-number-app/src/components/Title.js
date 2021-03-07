@@ -1,9 +1,9 @@
 import React from 'react';
-import { Text, StyleSheet } from 'react-native';
+import { Text, StyleSheet, Dimensions } from 'react-native';
 
 const styles = StyleSheet.create({
   title: {
-    fontSize: 24,
+    fontSize: Dimensions.get('window').height > 600 ? 24 : 16,
     fontFamily: 'open-sans-bold',
     marginVertical: 16,
   },

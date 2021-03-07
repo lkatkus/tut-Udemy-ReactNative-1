@@ -1,6 +1,7 @@
 import React from 'react';
-import { Alert, View, StyleSheet, FlatList } from 'react-native';
+import { Alert, View, StyleSheet, FlatList, Dimensions } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import * as ScreenOrientation from 'expo-screen-orientation';
 
 import { ScreenContainer } from './../containers';
 import { Button, Card, Title, BodyText } from './../components';
@@ -11,8 +12,8 @@ const styles = StyleSheet.create({
     maxWidth: '100%',
   },
   valueLabel: {
-    fontSize: 40,
-    marginTop: 16,
+    fontSize: Dimensions.get('window').height > 600 ? 32 : 16,
+    marginTop: Dimensions.get('window').height > 600 ? 16 : 8,
     textAlign: 'center',
   },
   buttonsContainer: {
@@ -32,7 +33,7 @@ const styles = StyleSheet.create({
     flexGrow: 1,
   },
   listItem: {
-    marginVertical: 16,
+    marginVertical: Dimensions.get('window').height > 600 ? 16 : 8,
     alignItems: 'center',
   },
 });
@@ -59,8 +60,13 @@ const GameScreen = ({
   selectedValue,
   handleGameFinished,
 }) => {
+  // ScreenOrientation.lockAsync(ScreenOrientation.OrientationLock.PORTRAIT);
+
   const currentMin = React.useRef(min);
   const currentMax = React.useRef(max);
+  const [isLandscape, setIsLandscape] = React.useState(
+    Dimensions.get('window').height < Dimensions.get('window').width
+  );
   const [currentGuess, setCurrentGuess] = React.useState(
     generateRandom(min, max, selectedValue)
   );
@@ -98,29 +104,62 @@ const GameScreen = ({
     }
   }, [currentGuess]);
 
+  React.useEffect(() => {
+    const updateLayout = () => {
+      setIsLandscape(
+        Dimensions.get('window').height < Dimensions.get('window').width
+      );
+    };
+
+    Dimensions.addEventListener('change', updateLayout);
+
+    return () => {
+      Dimensions.removeEventListener('change', updateLayout);
+    };
+  });
+
   return (
-    <ScreenContainer>
-      <Title>Opponent's Guess</Title>
+    // @TODO maybe create separate landscape and portrait layouts
+    <ScreenContainer style={isLandscape && { flexDirection: 'row' }}>
+      <View
+        style={
+          isLandscape && {
+            alignItems: 'center',
+          }
+        }
+      >
+        <Title>Opponent's Guess</Title>
 
-      <Card style={styles.card}>
-        <BodyText style={styles.valueLabel}>{currentGuess}</BodyText>
-        <View style={styles.buttonsContainer}>
-          <View style={styles.button}>
-            <Button
-              title={<Ionicons size={24} name='md-remove' />}
-              onPress={handleLower}
-            />
+        <Card style={styles.card}>
+          <BodyText style={styles.valueLabel}>{currentGuess}</BodyText>
+          <View style={styles.buttonsContainer}>
+            <View style={styles.button}>
+              <Button
+                title={
+                  <Ionicons
+                    size={Dimensions.get('window').height > 600 ? 24 : 12}
+                    name='md-remove'
+                  />
+                }
+                onPress={handleLower}
+              />
+            </View>
+            <View style={styles.button}>
+              <Button
+                title={
+                  <Ionicons
+                    size={Dimensions.get('window').height > 600 ? 24 : 12}
+                    name='md-add'
+                  />
+                }
+                onPress={handleHigher}
+              />
+            </View>
           </View>
-          <View style={styles.button}>
-            <Button
-              title={<Ionicons size={24} name='md-add' />}
-              onPress={handleHigher}
-            />
-          </View>
-        </View>
-      </Card>
+        </Card>
+      </View>
 
-      <View style={styles.listContainer}>
+      <View style={isLandscape ? { padding: 10 } : styles.listContainer}>
         {/* <ScrollView contentContainerStyle={styles.list}>
           {guesses.map((guess, index) => (
             <View key={`${index}-${guess}`} style={styles.listItem}>

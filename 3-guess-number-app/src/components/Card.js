@@ -1,9 +1,9 @@
 import React from 'react';
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet, Dimensions } from 'react-native';
 
 const styles = StyleSheet.create({
   container: {
-    padding: 24,
+    padding: Dimensions.get('window').height > 600 ? 24 : 16,
     borderRadius: 16,
     // IOS
     shadowColor: 'black',
