@@ -1,14 +1,15 @@
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { Button, Text, StyleSheet } from 'react-native';
 
 import { ScreenContainer } from '../containers';
 
 const styles = StyleSheet.create({});
 
-const MealDetailsScreen = () => {
+const MealDetailsScreen = ({ navigation }) => {
   return (
     <ScreenContainer>
       <Text>MealDetailsScreen</Text>
+      <Button title='Go back' onPress={() => navigation.goBack()} />
     </ScreenContainer>
   );
 };

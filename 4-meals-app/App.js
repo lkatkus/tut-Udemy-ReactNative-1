@@ -14,6 +14,7 @@ import {
   FavoritesScreen,
   FiltersScreen,
 } from './src/screens';
+import colors from './src/constants/colors';
 
 const Stack = createStackNavigator();
 
@@ -38,7 +39,15 @@ const App = () => {
 
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName='CategoriesScreen'>
+      <Stack.Navigator
+        initialRouteName='CategoriesScreen'
+        screenOptions={{
+          headerTintColor: 'white',
+          headerStyle: {
+            backgroundColor: colors.primary,
+          },
+        }}
+      >
         <Stack.Screen
           name='Categories'
           component={CategoriesScreen}
