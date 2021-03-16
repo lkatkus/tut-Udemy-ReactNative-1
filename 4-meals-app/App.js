@@ -28,11 +28,12 @@ const fetchFonts = () => {
 const App = () => {
   const [assetsLoaded, setAssetsLoaded] = React.useState(false);
 
-  if (assetsLoaded) {
+  if (!assetsLoaded) {
     return (
       <AppLoading
         startAsync={fetchFonts}
         onFinish={() => setAssetsLoaded(true)}
+        onError={(err) => console.log(err)}
       />
     );
   }

@@ -5,11 +5,12 @@ import { ScreenContainer } from '../containers';
 
 const styles = StyleSheet.create({});
 
-const MealDetailsScreen = ({ navigation }) => {
+const MealDetailsScreen = ({ navigation, route }) => {
+  const mealId = route.params.mealId;
+
   return (
     <ScreenContainer>
-      <Text>MealDetailsScreen</Text>
-      <Button title='Go back' onPress={() => navigation.goBack()} />
+      <Text>MealDetailsScreen {mealId}</Text>
     </ScreenContainer>
   );
 };

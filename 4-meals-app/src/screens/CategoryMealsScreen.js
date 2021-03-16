@@ -1,21 +1,33 @@
 import React from 'react';
-import { Button, Text, StyleSheet } from 'react-native';
+import { FlatList, View, Text, StyleSheet } from 'react-native';
 
 import { ScreenContainer } from '../containers';
-import { CATEGORIES } from '../data/mock-meals';
+import { MealCard } from '../components';
+import { CATEGORIES, MEALS } from '../data/mock-meals';
 
 const styles = StyleSheet.create({});
 
 const CategoryMealsScreen = ({ navigation, route }) => {
   const categoryId = route.params.categoryId;
-  const selectedCategory = CATEGORIES.find(({ id }) => id === categoryId);
+  const displayedMeals = MEALS.filter((meal) =>
+    meal.categoryIds.includes(categoryId)
+  );
 
   return (
     <ScreenContainer>
-      <Text>CategoryMealsScreen - {JSON.stringify(selectedCategory)}</Text>
-      <Button
-        title='Pasta'
-        onPress={() => navigation.navigate('MealDetails', { name: 'Pasta' })}
+      <FlatList
+        data={displayedMeals}
+        renderItem={({ item }) => (
+          <MealCard
+            {...item}
+            handleNavigateRecipe={() => {
+              navigation.navigate('MealDetails', {
+                name: item.title,
+                mealId: item.id,
+              });
+            }}
+          />
+        )}
       />
     </ScreenContainer>
   );
