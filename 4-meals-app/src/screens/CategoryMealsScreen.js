@@ -1,9 +1,9 @@
 import React from 'react';
-import { FlatList, View, Text, StyleSheet } from 'react-native';
+import { StyleSheet } from 'react-native';
 
 import { ScreenContainer } from '../containers';
-import { MealCard } from '../components';
-import { CATEGORIES, MEALS } from '../data/mock-meals';
+import { MealList } from '../components';
+import { MEALS } from '../data/mock-meals';
 
 const styles = StyleSheet.create({});
 
@@ -15,19 +15,14 @@ const CategoryMealsScreen = ({ navigation, route }) => {
 
   return (
     <ScreenContainer>
-      <FlatList
-        data={displayedMeals}
-        renderItem={({ item }) => (
-          <MealCard
-            {...item}
-            handleNavigateRecipe={() => {
-              navigation.navigate('MealDetails', {
-                name: item.title,
-                mealId: item.id,
-              });
-            }}
-          />
-        )}
+      <MealList
+        availableMeals={displayedMeals}
+        handleNavigateRecipe={(item) => {
+          navigation.navigate('MealDetails', {
+            name: item.title,
+            mealId: item.id,
+          });
+        }}
       />
     </ScreenContainer>
   );
