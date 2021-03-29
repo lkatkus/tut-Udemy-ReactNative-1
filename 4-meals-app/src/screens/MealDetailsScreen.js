@@ -1,16 +1,19 @@
 import React from 'react';
-import { Button, Text, StyleSheet } from 'react-native';
+import { Text, StyleSheet } from 'react-native';
 
 import { ScreenContainer } from '../containers';
+import { MealDetails } from '../components';
+import { MEALS } from '../data/mock-meals';
 
 const styles = StyleSheet.create({});
 
-const MealDetailsScreen = ({ navigation, route }) => {
+const MealDetailsScreen = ({ route }) => {
   const mealId = route.params.mealId;
+  const selectedMeal = MEALS.find((meal) => meal.id === mealId);
 
   return (
     <ScreenContainer>
-      <Text>MealDetailsScreen {mealId}</Text>
+      <MealDetails meal={selectedMeal} />
     </ScreenContainer>
   );
 };

@@ -7,6 +7,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 
 import { MealsNavigator, FiltersNavigator } from './src/navigators';
+import colors from './src/constants/colors';
 
 const Drawer = createDrawerNavigator();
 
@@ -32,8 +33,22 @@ const App = () => {
 
   return (
     <NavigationContainer>
-      <Drawer.Navigator initialRouteName='Meals'>
-        <Drawer.Screen name='Meals' component={MealsNavigator} />
+      <Drawer.Navigator
+        initialRouteName='Meals'
+        drawerContentOptions={{
+          activeTintColor: colors.primary,
+          labelStyle: {
+            fontFamily: 'open-sans-bold'
+          }
+        }}
+      >
+        <Drawer.Screen
+          name='Meals'
+          component={MealsNavigator}
+          options={{
+            title: 'Meals',
+          }}
+        />
         <Drawer.Screen name='Filter' component={FiltersNavigator} />
       </Drawer.Navigator>
     </NavigationContainer>
