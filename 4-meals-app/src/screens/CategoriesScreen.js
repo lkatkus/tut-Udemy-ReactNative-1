@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, View, FlatList, Text, StyleSheet } from 'react-native';
+import { FlatList, StyleSheet } from 'react-native';
 
 import { CategoryCard } from '../components';
 import { ScreenContainer } from '../containers';

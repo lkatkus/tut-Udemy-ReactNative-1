@@ -113,15 +113,6 @@ const FavoritesTab = () => (
       component={MealDetailsScreen}
       options={({ route }) => ({
         title: route.params.name,
-        headerRight: () => (
-          <HeaderButtons HeaderButtonComponent={HeaderButton}>
-            <Item
-              title='Favorite'
-              iconName='ios-star'
-              onPress={() => alert('Mark as favorite')}
-            />
-          </HeaderButtons>
-        ),
       })}
     />
   </Stack.Navigator>
@@ -142,7 +133,7 @@ const MealsNavigator = () => (
         tabBarColor: colors.primary,
         tabBarIcon: (props) => (
           <Ionicons
-            size={24}
+            size={20}
             color={props.color}
             name={props.focused ? 'ios-restaurant' : 'ios-restaurant-outline'}
           />
@@ -162,7 +153,7 @@ const MealsNavigator = () => (
         tabBarColor: colors.secondary,
         tabBarIcon: (props) => (
           <Ionicons
-            size={24}
+            size={20}
             color={props.color}
             name={props.focused ? 'ios-star' : 'ios-star-outline'}
           />

@@ -1,30 +1,37 @@
 import React from 'react';
-import { StyleSheet } from 'react-native';
+import { Text, StyleSheet } from 'react-native';
+import { useSelector } from 'react-redux';
 
 import { ScreenContainer } from '../containers';
 import { MealList } from '../components';
-import { MEALS } from '../data/mock-meals';
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  label: {
+    fontSize: 16,
+    textAlign: 'center',
+    fontFamily: 'open-sans',
+    marginVertical: 16,
+  },
+});
 
 const FavoritesScreen = ({ navigation }) => {
-  const categoryId = 'c1';
-
-  const displayedMeals = MEALS.filter((meal) =>
-    meal.categoryIds.includes(categoryId)
-  );
+  const favoriteMeals = useSelector((state) => state.meals.favoriteMeals);
 
   return (
     <ScreenContainer>
-      <MealList
-        availableMeals={displayedMeals}
-        handleNavigateRecipe={(item) => {
-          navigation.navigate('MealDetails', {
-            name: item.title,
-            mealId: item.id,
-          });
-        }}
-      />
+      {favoriteMeals.length === 0 ? (
+        <Text style={styles.label}>You have not added any favorites</Text>
+      ) : (
+        <MealList
+          availableMeals={favoriteMeals}
+          handleNavigateRecipe={(item) => {
+            navigation.navigate('MealDetails', {
+              name: item.title,
+              mealId: item.id,
+            });
+          }}
+        />
+      )}
     </ScreenContainer>
   );
 };

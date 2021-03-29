@@ -20,7 +20,7 @@ const FilterSwitch = ({ title, isSelected, handleChange }) => {
         value={isSelected}
         onValueChange={handleChange}
         thumbColor={colors.primary}
-        trackColor={{ true: colors.primary, false: '#ccc' }}
+        trackColor={{ true: colors.secondary, false: '#ccc' }}
       />
     </View>
   );

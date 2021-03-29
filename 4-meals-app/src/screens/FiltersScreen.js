@@ -1,9 +1,11 @@
 import React from 'react';
+import { useDispatch } from 'react-redux';
 import { Text, StyleSheet } from 'react-native';
 import { HeaderButtons, Item } from 'react-navigation-header-buttons';
 
 import { ScreenContainer } from '../containers';
 import { FilterSwitch, HeaderButton } from '../components';
+import { mealsActions } from '../store/actions';
 
 const styles = StyleSheet.create({
   title: {
@@ -15,6 +17,8 @@ const styles = StyleSheet.create({
 });
 
 const FiltersScreen = ({ navigation }) => {
+  const dispatch = useDispatch();
+
   const [isGlutenFree, setIsGlutenFree] = React.useState(false);
   const [isLactoseFree, setIsLactoseFree] = React.useState(false);
   const [isVegan, setIsVegan] = React.useState(false);
@@ -28,7 +32,7 @@ const FiltersScreen = ({ navigation }) => {
       vegetarian: isVegetarian,
     };
 
-    console.log(appliedFilters);
+    dispatch(mealsActions.setFilters(appliedFilters));
   }, [isGlutenFree, isLactoseFree, isVegan, isVegetarian]);
 
   React.useEffect(() => {

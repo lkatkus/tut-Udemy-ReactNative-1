@@ -10,7 +10,7 @@ const HeaderButton = (props) => {
     <NavHeaderButton
       {...props}
       IconComponent={Ionicons}
-      iconSize={16}
+      iconSize={20}
       color={Platform.OS === 'android' ? 'white' : colors.primary}
     />
   );
