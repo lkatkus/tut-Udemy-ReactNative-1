@@ -1,10 +1,13 @@
 import React from 'react';
-import { View, Text } from 'react-native';
+import { View, Text, FlatList } from 'react-native';
 
 const ProductsOverview = () => {
   return (
     <View>
       <Text>ProductsOverview</Text>
+      <View>
+        <FlatList />
+      </View>
     </View>
   );
 };
