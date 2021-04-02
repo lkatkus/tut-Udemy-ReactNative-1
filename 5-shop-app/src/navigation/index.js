@@ -1,0 +1,1 @@
+export { ProductsNavigator } from './ShopNavigator';
