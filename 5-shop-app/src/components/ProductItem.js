@@ -1,11 +1,18 @@
 import React from 'react';
-import { Button, View, Text, Image, StyleSheet } from 'react-native';
+import {
+  Button,
+  View,
+  Text,
+  Image,
+  StyleSheet,
+  TouchableOpacity,
+  TouchableNativeFeedback,
+  Platform,
+} from 'react-native';
 
 const styles = StyleSheet.create({
   itemContainer: {
     margin: 20,
-    padding: 10,
-    height: 300,
     borderRadius: 10,
     backgroundColor: 'white',
     shadowColor: 'black',
@@ -16,37 +23,64 @@ const styles = StyleSheet.create({
     },
     elevation: 5,
   },
+  touchableContainer: {
+    flex: 1,
+    overflow: 'hidden',
+    borderRadius: 10,
+  },
+  detailsContainer: {
+    height: 300,
+    padding: 20,
+  },
   image: {
     width: '100%',
     height: '60%',
   },
+  details: {
+    flex: 1,
+    justifyContent: 'center',
+  },
   titleLabel: {
     fontSize: 16,
     marginVertical: 4,
-    textAlign: 'center'
+    textAlign: 'center',
   },
   priceLabel: {
     fontSize: 12,
     color: '#888',
-    marginBottom: 4,
-    textAlign: 'center'
+    textAlign: 'center',
   },
   buttonsContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    alignItems: 'center',
   },
 });
 
 const ProductItem = ({ item, handleDetailsClick, handleToCardClick }) => {
+  let TouchableComponent = TouchableOpacity;
+
+  if (Platform.OS === 'android' && Platform.Version >= 21) {
+    TouchableComponent = TouchableNativeFeedback;
+  }
+
   return (
     <View style={styles.itemContainer}>
-      <Image style={styles.image} source={{ uri: item.imageUrl }} />
-      <Text style={styles.titleLabel}>{item.title}</Text>
-      <Text style={styles.priceLabel}>${Number(item.price).toFixed(2)}</Text>
-      <View style={styles.buttonsContainer}>
-        <Button title='View Details' onPress={handleDetailsClick} />
-        <Button title='To Card' onPress={handleToCardClick} />
+      <View style={styles.touchableContainer}>
+        <TouchableComponent onPress={handleDetailsClick} useForeground>
+          <View style={styles.detailsContainer}>
+            <Image style={styles.image} source={{ uri: item.imageUrl }} />
+            <View style={styles.details}>
+              <Text style={styles.titleLabel}>{item.title}</Text>
+              <Text style={styles.priceLabel}>
+                ${Number(item.price).toFixed(2)}
+              </Text>
+            </View>
+            <View style={styles.buttonsContainer}>
+              <Button title='View Details' onPress={handleDetailsClick} />
+              <Button title='To Card' onPress={handleToCardClick} />
+            </View>
+          </View>
+        </TouchableComponent>
       </View>
     </View>
   );

@@ -2,7 +2,7 @@ import React from 'react';
 import { Platform } from 'react-native';
 import { createStackNavigator } from '@react-navigation/stack';
 
-import { ProductsOverviewScreen } from '../screens';
+import { ProductsOverviewScreen, ProductDetailsScreen } from '../screens';
 import { colors } from '../constants';
 
 const Stack = createStackNavigator();
@@ -20,6 +20,17 @@ export const ProductsNavigator = () => {
           },
           headerTintColor: Platform.OS === 'android' ? 'white' : colors.primary,
         }}
+      />
+      <Stack.Screen
+        name='ProductDetailsScreen'
+        component={ProductDetailsScreen}
+        options={({ route }) => ({
+          title: route.params.product.title,
+          headerStyle: {
+            backgroundColor: Platform.OS === 'android' ? colors.primary : '',
+          },
+          headerTintColor: Platform.OS === 'android' ? 'white' : colors.primary,
+        })}
       />
     </Stack.Navigator>
   );

@@ -4,7 +4,8 @@ import { useSelector } from 'react-redux';
 
 import { ProductItem } from '../../components';
 
-const ProductsOverview = () => {
+const ProductsOverview = (props) => {
+  const { navigation } = props;
   const products = useSelector((store) => store.products.availableProducts);
 
   return (
@@ -12,7 +13,18 @@ const ProductsOverview = () => {
       <View>
         <FlatList
           data={products}
-          renderItem={ProductItem}
+          renderItem={(product) => {
+            return (
+              <ProductItem
+                handleDetailsClick={() => {
+                  navigation.navigate('ProductDetailsScreen', {
+                    product: product.item,
+                  });
+                }}
+                {...product}
+              />
+            );
+          }}
         />
       </View>
     </View>
