@@ -1,41 +1,76 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import * as ExpoFileSystem from 'expo-file-system';
+
+import { insertPlace } from '../../utils/db';
+
+class Place {
+  constructor({ title, images, address, lat, lng }) {
+    this.title = title;
+    this.images = images;
+    this.address = address;
+    this.lat = lat;
+    this.lng = lng;
+  }
+}
 
 const initialState = {
   places: [],
 };
 
-const getPlaces = createAsyncThunk('places/getPlaces', async () => {
-  const res = await fetch('https://jsonplaceholder.typicode.com/posts').then(
-    (data) => data.json()
-  );
+const handleFileMove = async (filePath) => {
+  const fileName = filePath.split('/').pop();
+  const newPath = ExpoFileSystem.documentDirectory + fileName;
 
-  return res;
-});
-
-class Place {
-  constructor(id, data) {
-    this.id = id;
-    this.title = data.title;
-    this.images = data.images;
+  try {
+    await ExpoFileSystem.moveAsync({
+      from: filePath,
+      to: newPath,
+    });
+  } catch (err) {
+    console.log(err);
+    throw err;
   }
-}
+
+  return newPath;
+};
+
+const addPlace = createAsyncThunk('places/addPlace', async (payload) => {
+  let updatedImages = payload.images;
+
+  if (updatedImages.length > 0) {
+    updatedImages = await Promise.all(updatedImages.map(handleFileMove));
+  }
+
+  const newPlace = new Place({ ...payload, images: updatedImages });
+
+  try {
+    const dbResult = await insertPlace(
+      newPlace.title,
+      newPlace.images,
+      'newPlace.address',
+      15.6,
+      12.3
+    );
+
+    newPlace.id = dbResult.insertId.toString();
+  } catch (err) {
+    console.log(err);
+    throw err;
+  }
+
+  return newPlace;
+});
 
 export const placesSlice = createSlice({
   name: 'places',
   initialState,
-  reducers: {
-    addPlace: (state, { payload }) => {
-      const newPlace = new Place(Date.now(), payload);
-
-      state.places = state.places.concat(newPlace);
-    },
-  },
-  extraReducers: {
-    [getPlaces.fulfilled]: (state, payload) => {
-      console.log('getPlaces.fulfilled', payload);
-    },
+  reducers: {},
+  extraReducers: (builder) => {
+    builder.addCase(addPlace.fulfilled, (state, { payload }) => {
+      state.places = state.places.concat(payload);
+    });
   },
 });
 
-export const actions = { ...placesSlice.actions, getPlaces };
+export const actions = { ...placesSlice.actions, addPlace };
 export const reducer = placesSlice.reducer;
