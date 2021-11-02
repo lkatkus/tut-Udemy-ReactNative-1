@@ -10,7 +10,6 @@ const PlaceDetailScreen = (props) => {
 
   return (
     <View>
-      <Text>PlaceDetailScreen</Text>
       <Text>{JSON.stringify(currentPlace)}</Text>
     </View>
   );

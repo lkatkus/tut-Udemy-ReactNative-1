@@ -1,7 +1,8 @@
 import React from 'react';
-import { View, FlatList, Text, StyleSheet } from 'react-native';
+import { View, FlatList, StyleSheet } from 'react-native';
 import { useSelector } from 'react-redux';
 
+import { SCREENS } from '../navigation/PlacesNavigatorScreens';
 import { selectors } from '../store/places';
 import { PlaceItem } from '../components';
 
@@ -15,7 +16,7 @@ const PlacesListScreen = (props) => {
         renderItem={({ item }) => (
           <PlaceItem
             onSelect={() =>
-              props.navigation.navigate('PlaceDetailScreen', {
+              props.navigation.navigate(SCREENS.PlaceDetailScreen, {
                 placeId: item.id,
                 placeTitle: item.title,
               })

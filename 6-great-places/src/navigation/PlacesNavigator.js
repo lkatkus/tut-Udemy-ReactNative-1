@@ -11,13 +11,14 @@ import {
 } from '../screens';
 import { HeaderButton } from '../components';
 import { Colors } from '../constants';
+import { SCREENS } from './PlacesNavigatorScreens';
 
 const Stack = createNativeStackNavigator();
 
 const PlacesNavigator = () => {
   return (
     <Stack.Navigator
-      initialRouteName='PlacesListScreen'
+      initialRouteName={SCREENS.PlacesListScreen}
       screenOptions={{
         headerTintColor: Platform.OS === 'android' ? 'white' : Colors.primary,
         headerStyle: {
@@ -25,15 +26,15 @@ const PlacesNavigator = () => {
         },
       }}
     >
-      <Stack.Screen name='MapScreen' component={MapScreen} />
-      <Stack.Screen name='NewPlaceScreen' component={NewPlaceScreen} />
+      <Stack.Screen name={SCREENS.MapScreen} component={MapScreen} />
+      <Stack.Screen name={SCREENS.NewPlaceScreen} component={NewPlaceScreen} />
       <Stack.Screen
-        name='PlaceDetailScreen'
+        name={SCREENS.PlaceDetailScreen}
         component={PlaceDetailScreen}
         options={({ route }) => ({ title: route.params.placeTitle })}
       />
       <Stack.Screen
-        name='PlacesListScreen'
+        name={SCREENS.PlacesListScreen}
         component={PlacesListScreen}
         options={(props) => ({
           headerRight: () => (
