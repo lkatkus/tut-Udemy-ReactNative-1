@@ -1,3 +1,5 @@
 export { default as HeaderButton } from './HeaderButton';
 export { default as TextInput } from './TextInput';
 export { default as PlaceItem } from './PlaceItem';
+export { default as ImagePicker } from './ImagePicker';
+export { default as MultiItemPicker } from './MultiItemPicker';

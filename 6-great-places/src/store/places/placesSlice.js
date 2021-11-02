@@ -13,9 +13,10 @@ const getPlaces = createAsyncThunk('places/getPlaces', async () => {
 });
 
 class Place {
-  constructor(id, title) {
+  constructor(id, data) {
     this.id = id;
-    this.title = title;
+    this.title = data.title;
+    this.images = data.images;
   }
 }
 
@@ -24,7 +25,7 @@ export const placesSlice = createSlice({
   initialState,
   reducers: {
     addPlace: (state, { payload }) => {
-      const newPlace = new Place(Date.now(), payload.name);
+      const newPlace = new Place(Date.now(), payload);
 
       state.places = state.places.concat(newPlace);
     },
