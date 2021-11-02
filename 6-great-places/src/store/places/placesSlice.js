@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import * as ExpoFileSystem from 'expo-file-system';
 
-import { insertPlace } from '../../utils/db';
+import { insertPlace, fetchPlaces } from '../../utils/db';
 
 class Place {
   constructor({ title, images, address, lat, lng }) {
@@ -33,6 +33,19 @@ const handleFileMove = async (filePath) => {
 
   return newPath;
 };
+
+const loadPlaces = createAsyncThunk('places/setPlaces', async () => {
+  try {
+    const places = await fetchPlaces();
+
+    return places.rows._array.map((place) => ({
+      ...place,
+      images: JSON.parse(place.images),
+    }));
+  } catch (err) {
+    console.log(err);
+  }
+});
 
 const addPlace = createAsyncThunk('places/addPlace', async (payload) => {
   let updatedImages = payload.images;
@@ -69,8 +82,11 @@ export const placesSlice = createSlice({
     builder.addCase(addPlace.fulfilled, (state, { payload }) => {
       state.places = state.places.concat(payload);
     });
+    builder.addCase(loadPlaces.fulfilled, (state, { payload }) => {
+      state.places = payload;
+    });
   },
 });
 
-export const actions = { ...placesSlice.actions, addPlace };
+export const actions = { ...placesSlice.actions, loadPlaces, addPlace };
 export const reducer = placesSlice.reducer;

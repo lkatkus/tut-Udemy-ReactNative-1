@@ -19,6 +19,23 @@ export const initDatabase = () => {
   });
 };
 
+export const fetchPlaces = () => {
+  return new Promise((resolve, reject) => {
+    db.transaction((tx) => {
+      tx.executeSql(
+        'SELECT * FROM places',
+        [],
+        (_, result) => {
+          resolve(result);
+        },
+        (_, err) => {
+          reject(err);
+        }
+      );
+    });
+  });
+};
+
 export const insertPlace = (title, images, address, lat, lng) => {
   return new Promise((resolve, reject) => {
     db.transaction((tx) => {
