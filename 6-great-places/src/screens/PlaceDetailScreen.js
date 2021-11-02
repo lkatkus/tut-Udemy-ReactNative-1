@@ -1,14 +1,21 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
+import { useSelector } from 'react-redux';
 
-const PlaceDetailScreen = () => {
+import { selectors } from '../store/places';
+
+const PlaceDetailScreen = (props) => {
+  const placeId = props.route.params.placeId;
+  const currentPlace = useSelector(selectors.getPlaceById(placeId));
+
   return (
     <View>
       <Text>PlaceDetailScreen</Text>
+      <Text>{JSON.stringify(currentPlace)}</Text>
     </View>
   );
 };
 
-const styles = StyleSheet.create({})
+const styles = StyleSheet.create({});
 
 export default PlaceDetailScreen;

@@ -1,20 +1,27 @@
 import React from 'react';
-import { Button, Text, ScrollView, StyleSheet } from 'react-native';
+import { Button, ScrollView, StyleSheet } from 'react-native';
+import { useDispatch } from 'react-redux';
 import { Formik, Field } from 'formik';
 
 import { Colors } from '../constants';
 import { TextInput } from '../components';
+import { actions } from '../store/places';
 
-const NewPlaceScreen = () => {
+const NewPlaceScreen = (props) => {
+  const dispatch = useDispatch();
+
   return (
     <Formik
-      initialValues={{ placeName: '' }}
-      onSubmit={(values) => console.log(values)}
+      initialValues={{ name: '' }}
+      onSubmit={(values) => {
+        dispatch(actions.addPlace(values));
+        props.navigation.goBack();
+      }}
     >
       {({ handleSubmit }) => (
         <ScrollView style={styles.form}>
           <Field
-            name='placeName'
+            name='name'
             title='Name'
             placeholder='Name of the new place'
             component={TextInput}
