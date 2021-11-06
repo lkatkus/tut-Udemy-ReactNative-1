@@ -1,12 +1,19 @@
 import React from 'react';
-import { Button, View, ScrollView, StyleSheet, Text } from 'react-native';
+import { Button, ScrollView, StyleSheet, Text } from 'react-native';
 import { useDispatch } from 'react-redux';
-import { Formik, Field, FieldArray } from 'formik';
+import { Formik } from 'formik';
 
 import { SCREENS } from '../navigation/PlacesNavigatorScreens';
 import { actions } from '../store/places';
 import { Colors } from '../constants';
-import { TextInput, ImagePicker, MultiItemPicker } from '../components';
+import {
+  Field,
+  FieldArray,
+  TextInput,
+  ImagePicker,
+  LocationPicker,
+  MultiItemPicker,
+} from '../components';
 
 const NewPlaceScreen = (props) => {
   const dispatch = useDispatch();
@@ -38,6 +45,12 @@ const NewPlaceScreen = (props) => {
                 itemComponent={ImagePicker}
               />
             )}
+          />
+          <Field
+            name='location'
+            title='Location'
+            placeholder='Title of the new place'
+            component={LocationPicker}
           />
           <Button
             title='Save Place'

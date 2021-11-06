@@ -56,9 +56,7 @@ const ImagePicker = ({ field }) => {
 };
 
 const styles = StyleSheet.create({
-  imagePicker: {
-    alignItems: 'center',
-  },
+  imagePicker: {},
   imagePreviewContainer: {
     width: 100,
     height: 100,
