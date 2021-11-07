@@ -31,7 +31,10 @@ const verifyPermissions = async () => {
   return true;
 };
 
-const LocationPicker = () => {
+const LocationPicker = ({ field, previewComponent: PreviewComponent }) => {
+  const [isFetching, setIsFetching] = React.useState(false);
+  const { value, onChange } = field;
+
   const getLocationHandler = async () => {
     const hasPermission = await verifyPermissions();
 
@@ -39,11 +42,19 @@ const LocationPicker = () => {
       return;
     }
 
+    setIsFetching(true);
+
     try {
       const location = await ExpoLocation.getCurrentPositionAsync();
+      setIsFetching(false);
 
-      console.log(location);
+      const {
+        coords: { latitude, longitude },
+      } = location;
+
+      onChange({ latitude, longitude });
     } catch (err) {
+      setIsFetching(false);
       Alert.alert('Could not fetch location!', 'Please try again later', [
         { text: 'Okay' },
       ]);
@@ -53,7 +64,15 @@ const LocationPicker = () => {
   return (
     <View style={styles.locationPicker}>
       <View style={styles.mapPreview}>
-        <Text>No location chosen yet!</Text>
+        <Text>
+          {isFetching ? (
+            <ActivityIndicator size='large' color={Colors.primary} />
+          ) : value ? (
+            <PreviewComponent location={value} />
+          ) : (
+            'No location chosen yet!'
+          )}
+        </Text>
       </View>
       <Button
         title='Get user location'
@@ -72,6 +91,8 @@ const styles = StyleSheet.create({
     height: 150,
     borderColor: '#ccc',
     borderWidth: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });
 
