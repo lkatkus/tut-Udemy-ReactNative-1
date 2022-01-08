@@ -41,11 +41,13 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   titleLabel: {
+    fontFamily: 'open-sans-bold',
     fontSize: 16,
     marginVertical: 4,
     textAlign: 'center',
   },
   priceLabel: {
+    fontFamily: 'open-sans',
     fontSize: 12,
     color: '#888',
     textAlign: 'center',
@@ -56,7 +58,7 @@ const styles = StyleSheet.create({
   },
 });
 
-const ProductItem = ({ item, handleDetailsClick, handleToCardClick }) => {
+const ProductItem = ({ item, handleDetailsClick, handleToCartClick }) => {
   let TouchableComponent = TouchableOpacity;
 
   if (Platform.OS === 'android' && Platform.Version >= 21) {
@@ -77,7 +79,7 @@ const ProductItem = ({ item, handleDetailsClick, handleToCardClick }) => {
             </View>
             <View style={styles.buttonsContainer}>
               <Button title='View Details' onPress={handleDetailsClick} />
-              <Button title='To Card' onPress={handleToCardClick} />
+              <Button title='To Cart' onPress={handleToCartClick} />
             </View>
           </View>
         </TouchableComponent>
