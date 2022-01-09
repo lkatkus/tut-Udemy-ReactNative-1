@@ -1,9 +1,11 @@
 import React from 'react';
 import { View, Button, FlatList, Text, StyleSheet } from 'react-native';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 
 import { colors } from '../../constants';
 import { CartItem } from '../../components';
+import { removeFromCart, clearCart } from '../../store/cart';
+import { addOrder } from '../../store/orders';
 
 const getItemsList = (itemsData) => {
   const itemKeys = Object.keys(itemsData);
@@ -14,12 +16,13 @@ const getItemsList = (itemsData) => {
 const CardScreen = () => {
   const currentCart = useSelector((state) => state.cart);
   const cartItems = getItemsList(currentCart.items);
+  const dispatch = useDispatch();
 
   return (
     <View style={styles.screen}>
       <View style={styles.summary}>
         <Text style={styles.summaryText}>
-          Total:{' '}
+          <Text>Total:</Text>
           <Text style={styles.amount}>
             ${currentCart.totalAmount.toFixed(2)}
           </Text>
@@ -27,7 +30,10 @@ const CardScreen = () => {
         <Button
           title='Order now'
           disabled={cartItems.length === 0}
-          onPress={() => alert('ORDER')}
+          onPress={() => {
+            dispatch(addOrder(currentCart.items, currentCart.totalAmount));
+            dispatch(clearCart());
+          }}
         />
       </View>
       <View>
@@ -38,7 +44,7 @@ const CardScreen = () => {
             return (
               <CartItem
                 item={item}
-                handleOnRemove={() => alert('handleOnRemove')}
+                handleOnRemove={() => dispatch(removeFromCart(item.id))}
               />
             );
           }}

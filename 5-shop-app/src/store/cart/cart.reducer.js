@@ -1,5 +1,5 @@
 import CartItem from '../../models/cart-item';
-import { ADD_TO_CART } from './cart.actions';
+import { ADD_TO_CART, REMOVE_FROM_CART, CLEAR_CART } from './cart.actions';
 
 const initialState = {
   items: {},
@@ -8,6 +8,8 @@ const initialState = {
 
 export const reducer = (state = initialState, action) => {
   switch (action.type) {
+    case CLEAR_CART:
+      return initialState;
     case ADD_TO_CART:
       const productId = action.product.id;
 
@@ -44,6 +46,35 @@ export const reducer = (state = initialState, action) => {
             [productId]: newCartItem,
           },
           totalAmount: state.totalAmount + addedProduct.price,
+        };
+      }
+    case REMOVE_FROM_CART:
+      const reducedItem = state.items[action.productId];
+      const currentQuantity = reducedItem.quantity;
+
+      if (currentQuantity > 1) {
+        const updatedCartItem = new CartItem(
+          reducedItem.quantity - 1,
+          reducedItem.price,
+          reducedItem.title,
+          reducedItem.sum - reducedItem.price
+        );
+        const updatedCartItems = { ...state.items };
+        updatedCartItems[action.productId] = updatedCartItem;
+
+        return {
+          ...state,
+          items: updatedCartItems,
+          totalAmount: state.totalAmount - updatedCartItem.price,
+        };
+      } else {
+        const updatedCartItems = { ...state.items };
+        delete updatedCartItems[action.productId];
+
+        return {
+          ...state,
+          items: updatedCartItems,
+          totalAmount: state.totalAmount - reducedItem.price,
         };
       }
     default:

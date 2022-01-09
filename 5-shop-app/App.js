@@ -7,7 +7,7 @@ import * as Font from 'expo-font';
 import { NavigationContainer } from '@react-navigation/native';
 
 import { store } from './src/store';
-import { ProductsNavigator } from './src/navigation';
+import { ShopNavigator } from './src/navigation';
 
 const fetchFonts = () => {
   return Font.loadAsync({
@@ -32,7 +32,7 @@ const App = () => {
   return (
     <Provider store={store}>
       <NavigationContainer>
-        <ProductsNavigator />
+        <ShopNavigator />
       </NavigationContainer>
     </Provider>
   );

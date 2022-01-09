@@ -1,1 +1,1 @@
-export { ProductsNavigator } from './ShopNavigator';
+export { default as ShopNavigator } from './ShopNavigator';
