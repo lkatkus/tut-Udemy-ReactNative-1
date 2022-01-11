@@ -31,7 +31,7 @@ const CardScreen = () => {
           title='Order now'
           disabled={cartItems.length === 0}
           onPress={() => {
-            dispatch(addOrder(currentCart.items, currentCart.totalAmount));
+            dispatch(addOrder(cartItems, currentCart.totalAmount));
             dispatch(clearCart());
           }}
         />

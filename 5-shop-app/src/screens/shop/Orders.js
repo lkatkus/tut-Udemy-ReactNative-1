@@ -2,6 +2,8 @@ import React from 'react';
 import { View, Text, FlatList } from 'react-native';
 import { useSelector } from 'react-redux';
 
+import { OrderItem } from '../../components';
+
 const Orders = () => {
   const orders = useSelector((state) => state.orders.orders);
 
@@ -14,17 +16,18 @@ const Orders = () => {
   }
 
   return (
-    <View>
-      <Text>Your Orders:</Text>
-      <FlatList
-        data={orders}
-        renderItem={({ item }) => (
-          <View>
-            <Text>{JSON.stringify(item)}</Text>
-          </View>
-        )}
-      />
-    </View>
+    <FlatList
+      data={orders}
+      renderItem={({ item }) => {
+        return (
+          <OrderItem
+            items={item.items}
+            date={item.readableDate}
+            amount={item.totalAmount}
+          />
+        );
+      }}
+    />
   );
 };
 

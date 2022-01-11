@@ -10,8 +10,8 @@ export const reducer = (state = initialState, action) => {
     case ADD_ORDER:
       const newOrder = new Order(
         new Date().toString(),
-        action.items,
-        action.amount,
+        action.order.items,
+        action.order.amount,
         new Date()
       );
 
