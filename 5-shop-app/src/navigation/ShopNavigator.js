@@ -69,20 +69,6 @@ const ProductsNavigator = () => {
         })}
       />
       <Stack.Screen
-        name='EditProductScreen'
-        component={EditProductScreen}
-        options={({ route }) => ({
-          title: route?.params?.product?.title || 'Add a Product',
-          headerStyle: {
-            backgroundColor: Platform.OS === 'android' ? colors.primary : '',
-          },
-          headerTitleStyle: {
-            fontFamily: 'open-sans-bold',
-          },
-          headerTintColor: Platform.OS === 'android' ? 'white' : colors.primary,
-        })}
-      />
-      <Stack.Screen
         name='CartScreen'
         component={CartScreen}
         options={() => ({
@@ -99,6 +85,61 @@ const ProductsNavigator = () => {
     </Stack.Navigator>
   );
 };
+
+const AdminNavigator = () => (
+  <Stack.Navigator>
+    <Stack.Screen
+      name={'Admin'}
+      component={UserProductsScreen}
+      options={(props) => ({
+        title: 'Your Products',
+        drawerIcon: () => (
+          <Ionicons
+            size={23}
+            name={Platform.OS === 'android' ? 'md-create' : 'ios-create'}
+          />
+        ),
+        headerTintColor: Platform.OS === 'android' ? 'white' : colors.secondary,
+        headerStyle: {
+          backgroundColor: Platform.OS === 'android' ? colors.secondary : '',
+        },
+        headerShown: true,
+        headerLeft: () => (
+          <HeaderButtons HeaderButtonComponent={HeaderButton}>
+            <Item
+              title='Menu'
+              iconName={Platform.OS === 'android' ? 'md-menu' : 'ios-menu'}
+              onPress={() => props.navigation.toggleDrawer()}
+            />
+          </HeaderButtons>
+        ),
+        headerRight: () => (
+          <HeaderButtons HeaderButtonComponent={HeaderButton}>
+            <Item
+              title='Add'
+              iconName={Platform.OS === 'android' ? 'md-create' : 'ios-create'}
+              onPress={() => props.navigation.navigate('EditProductScreen')}
+            />
+          </HeaderButtons>
+        ),
+      })}
+    />
+    <Stack.Screen
+      name='EditProductScreen'
+      component={EditProductScreen}
+      options={({ route }) => ({
+        title: route?.params?.product?.title || 'Add a Product',
+        headerStyle: {
+          backgroundColor: Platform.OS === 'android' ? colors.secondary : '',
+        },
+        headerTitleStyle: {
+          fontFamily: 'open-sans-bold',
+        },
+        headerTintColor: Platform.OS === 'android' ? 'white' : colors.secondary,
+      })}
+    />
+  </Stack.Navigator>
+);
 
 const ShopNavigator = () => {
   return (
@@ -146,40 +187,14 @@ const ShopNavigator = () => {
       />
       <Drawer.Screen
         name={'Admin'}
-        component={UserProductsScreen}
-        options={(props) => ({
+        component={AdminNavigator}
+        options={() => ({
           title: 'Your Products',
           drawerIcon: () => (
             <Ionicons
               size={23}
               name={Platform.OS === 'android' ? 'md-create' : 'ios-create'}
             />
-          ),
-          headerTintColor:
-            Platform.OS === 'android' ? 'white' : colors.secondary,
-          headerStyle: {
-            backgroundColor: Platform.OS === 'android' ? colors.secondary : '',
-          },
-          headerShown: true,
-          headerLeft: () => (
-            <HeaderButtons HeaderButtonComponent={HeaderButton}>
-              <Item
-                title='Menu'
-                iconName={Platform.OS === 'android' ? 'md-menu' : 'ios-menu'}
-                onPress={() => props.navigation.toggleDrawer()}
-              />
-            </HeaderButtons>
-          ),
-          headerRight: () => (
-            <HeaderButtons HeaderButtonComponent={HeaderButton}>
-              <Item
-                title='Add'
-                iconName={
-                  Platform.OS === 'android' ? 'md-create' : 'ios-create'
-                }
-                onPress={() => props.navigation.navigate('EditProductScreen')}
-              />
-            </HeaderButtons>
           ),
         })}
       />

@@ -1,5 +1,5 @@
 import PRODUCTS from '../../data/mock-products';
-import { DELETE_PRODUCT } from './products.actions';
+import { ADD_PRODUCT, DELETE_PRODUCT } from './products.actions';
 
 const initialState = {
   availableProducts: PRODUCTS,
@@ -8,6 +8,14 @@ const initialState = {
 
 export const reducer = (state = initialState, action) => {
   switch (action.type) {
+    case ADD_PRODUCT:
+      console.log('====================================');
+      console.log('ADD_PRODUCT', action.product);
+      console.log('====================================');
+
+      return {
+        ...state,
+      };
     case DELETE_PRODUCT:
       return {
         ...state,
