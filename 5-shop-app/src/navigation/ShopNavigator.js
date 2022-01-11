@@ -10,6 +10,8 @@ import {
   ProductDetailsScreen,
   CartScreen,
   OrdersScreen,
+  UserProductsScreen,
+  EditProductScreen,
 } from '../screens';
 import { colors } from '../constants';
 import { HeaderButton } from '../components';
@@ -67,6 +69,20 @@ const ProductsNavigator = () => {
         })}
       />
       <Stack.Screen
+        name='EditProductScreen'
+        component={EditProductScreen}
+        options={({ route }) => ({
+          title: route?.params?.product?.title || 'Add a Product',
+          headerStyle: {
+            backgroundColor: Platform.OS === 'android' ? colors.primary : '',
+          },
+          headerTitleStyle: {
+            fontFamily: 'open-sans-bold',
+          },
+          headerTintColor: Platform.OS === 'android' ? 'white' : colors.primary,
+        })}
+      />
+      <Stack.Screen
         name='CartScreen'
         component={CartScreen}
         options={() => ({
@@ -88,19 +104,33 @@ const ShopNavigator = () => {
   return (
     <Drawer.Navigator initialRouteName='Shop'>
       <Drawer.Screen
+        name={'Products'}
+        component={ProductsNavigator}
+        options={{
+          title: 'Products',
+          drawerIcon: () => (
+            <Ionicons
+              size={23}
+              name={Platform.OS === 'android' ? 'md-cart' : 'ios-cart'}
+            />
+          ),
+        }}
+      />
+      <Drawer.Screen
         name={'Orders'}
         component={OrdersScreen}
         options={(props) => ({
-          title: 'Your Orders',
+          title: 'Orders',
           drawerIcon: () => (
             <Ionicons
               size={23}
               name={Platform.OS === 'android' ? 'md-list' : 'ios-list'}
             />
           ),
-          headerTintColor: Platform.OS === 'android' ? 'white' : colors.primary,
+          headerTintColor:
+            Platform.OS === 'android' ? 'white' : colors.secondary,
           headerStyle: {
-            backgroundColor: Platform.OS === 'android' ? colors.primary : '',
+            backgroundColor: Platform.OS === 'android' ? colors.secondary : '',
           },
           headerShown: true,
           headerLeft: () => (
@@ -115,17 +145,43 @@ const ShopNavigator = () => {
         })}
       />
       <Drawer.Screen
-        name={'Shop'}
-        component={ProductsNavigator}
-        options={{
-          title: 'All Products',
+        name={'Admin'}
+        component={UserProductsScreen}
+        options={(props) => ({
+          title: 'Your Products',
           drawerIcon: () => (
             <Ionicons
               size={23}
-              name={Platform.OS === 'android' ? 'md-cart' : 'ios-cart'}
+              name={Platform.OS === 'android' ? 'md-create' : 'ios-create'}
             />
           ),
-        }}
+          headerTintColor:
+            Platform.OS === 'android' ? 'white' : colors.secondary,
+          headerStyle: {
+            backgroundColor: Platform.OS === 'android' ? colors.secondary : '',
+          },
+          headerShown: true,
+          headerLeft: () => (
+            <HeaderButtons HeaderButtonComponent={HeaderButton}>
+              <Item
+                title='Menu'
+                iconName={Platform.OS === 'android' ? 'md-menu' : 'ios-menu'}
+                onPress={() => props.navigation.toggleDrawer()}
+              />
+            </HeaderButtons>
+          ),
+          headerRight: () => (
+            <HeaderButtons HeaderButtonComponent={HeaderButton}>
+              <Item
+                title='Add'
+                iconName={
+                  Platform.OS === 'android' ? 'md-create' : 'ios-create'
+                }
+                onPress={() => props.navigation.navigate('EditProductScreen')}
+              />
+            </HeaderButtons>
+          ),
+        })}
       />
     </Drawer.Navigator>
   );

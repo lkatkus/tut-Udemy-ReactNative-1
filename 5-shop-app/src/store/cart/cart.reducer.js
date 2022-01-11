@@ -1,5 +1,10 @@
 import CartItem from '../../models/cart-item';
-import { ADD_TO_CART, REMOVE_FROM_CART, CLEAR_CART } from './cart.actions';
+import {
+  ADD_TO_CART,
+  REMOVE_FROM_CART,
+  DELETE_FROM_CART,
+  CLEAR_CART,
+} from './cart.actions';
 
 const initialState = {
   items: {},
@@ -77,6 +82,20 @@ export const reducer = (state = initialState, action) => {
           totalAmount: state.totalAmount - reducedItem.price,
         };
       }
+    case DELETE_FROM_CART:
+      if (!state.items[action.productId]) {
+        return state;
+      }
+
+      const updatedItems = { ...state.items };
+      const itemTotal = state.items[action.productId].sum;
+      delete updatedItems[action.productId];
+
+      return {
+        ...state,
+        items: updatedItems,
+        totalAmount: state.totalAmount - itemTotal,
+      };
     default:
       return state;
   }

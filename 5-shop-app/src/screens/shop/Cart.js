@@ -22,7 +22,7 @@ const CardScreen = () => {
     <View style={styles.screen}>
       <View style={styles.summary}>
         <Text style={styles.summaryText}>
-          <Text>Total:</Text>
+          <Text>Total: </Text>
           <Text style={styles.amount}>
             ${currentCart.totalAmount.toFixed(2)}
           </Text>

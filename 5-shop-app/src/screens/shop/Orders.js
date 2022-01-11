@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, FlatList } from 'react-native';
+import { View, Text, FlatList, StyleSheet } from 'react-native';
 import { useSelector } from 'react-redux';
 
 import { OrderItem } from '../../components';
@@ -9,8 +9,8 @@ const Orders = () => {
 
   if (orders.length === 0) {
     return (
-      <View>
-        <Text>You have no orders.</Text>
+      <View style={styles.textContainer}>
+        <Text style={styles.text}>You have no orders.</Text>
       </View>
     );
   }
@@ -30,5 +30,15 @@ const Orders = () => {
     />
   );
 };
+
+const styles = StyleSheet.create({
+  textContainer: {
+    padding: 20,
+  },
+  text: {
+    fontFamily: 'open-sans',
+    fontSize: 16
+  }
+});
 
 export default Orders;

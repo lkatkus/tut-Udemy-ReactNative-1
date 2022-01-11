@@ -1,12 +1,47 @@
 import React from 'react';
-import { View, Text } from 'react-native';
+import { Button, FlatList } from 'react-native';
+import { useSelector, useDispatch } from 'react-redux';
 
-const EditProduct = () => {
+import { ProductItem } from '../../components';
+import { colors } from '../../constants';
+import { deleteFromCart } from '../../store/cart';
+import { deleteProduct } from '../../store/products';
+
+const UserProducts = ({ navigation }) => {
+  const dispatch = useDispatch();
+  const userProducts = useSelector((state) => state.products.userProducts);
+
+  const handleEditProduct = (product) => {
+    navigation.navigate({
+      name: 'EditProductScreen',
+      params: {
+        product,
+      },
+    });
+  };
+
   return (
-    <View>
-      <Text>EditProduct</Text>
-    </View>
+    <FlatList
+      data={userProducts}
+      renderItem={({ item }) => (
+        <ProductItem item={item} handleSelect={() => {}}>
+          <Button
+            title='Edit'
+            color={colors.secondary}
+            onPress={() => handleEditProduct(item)}
+          />
+          <Button
+            title='Delete'
+            color={colors.primary}
+            onPress={() => {
+              dispatch(deleteProduct(item.id));
+              dispatch(deleteFromCart(item.id));
+            }}
+          />
+        </ProductItem>
+      )}
+    />
   );
 };
 
-export default EditProduct;
+export default UserProducts;

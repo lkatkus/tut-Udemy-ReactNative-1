@@ -1,4 +1,5 @@
 import PRODUCTS from '../../data/mock-products';
+import { DELETE_PRODUCT } from './products.actions';
 
 const initialState = {
   availableProducts: PRODUCTS,
@@ -6,5 +7,18 @@ const initialState = {
 };
 
 export const reducer = (state = initialState, action) => {
-  return state;
+  switch (action.type) {
+    case DELETE_PRODUCT:
+      return {
+        ...state,
+        availableProducts: state.availableProducts.filter(
+          (product) => product.id !== action.productId
+        ),
+        userProducts: state.userProducts.filter(
+          (product) => product.id !== action.productId
+        ),
+      };
+    default:
+      return state;
+  }
 };

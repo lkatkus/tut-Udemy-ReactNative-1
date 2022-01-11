@@ -1,12 +1,14 @@
 import React from 'react';
-import { View, Text } from 'react-native';
+import { View, Text, StyleSheet } from 'react-native';
 
-const UserProducts = () => {
+const EditProduct = () => {
   return (
     <View>
-      <Text>UserProducts</Text>
+      <Text>EditProduct</Text>
     </View>
   );
 };
 
-export default UserProducts;
+const styles = StyleSheet.create({});
+
+export default EditProduct;

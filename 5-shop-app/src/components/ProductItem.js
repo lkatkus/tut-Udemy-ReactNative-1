@@ -58,7 +58,7 @@ const styles = StyleSheet.create({
   },
 });
 
-const ProductItem = ({ item, handleDetailsClick, handleToCartClick }) => {
+const ProductItem = ({ item, handleSelect, children }) => {
   let TouchableComponent = TouchableOpacity;
 
   if (Platform.OS === 'android' && Platform.Version >= 21) {
@@ -68,7 +68,7 @@ const ProductItem = ({ item, handleDetailsClick, handleToCartClick }) => {
   return (
     <View style={styles.itemContainer}>
       <View style={styles.touchableContainer}>
-        <TouchableComponent onPress={handleDetailsClick} useForeground>
+        <TouchableComponent onPress={handleSelect} useForeground>
           <View style={styles.detailsContainer}>
             <Image style={styles.image} source={{ uri: item.imageUrl }} />
             <View style={styles.details}>
@@ -77,10 +77,7 @@ const ProductItem = ({ item, handleDetailsClick, handleToCartClick }) => {
                 ${Number(item.price).toFixed(2)}
               </Text>
             </View>
-            <View style={styles.buttonsContainer}>
-              <Button title='View Details' onPress={handleDetailsClick} />
-              <Button title='To Cart' onPress={handleToCartClick} />
-            </View>
+            <View style={styles.buttonsContainer}>{children}</View>
           </View>
         </TouchableComponent>
       </View>
