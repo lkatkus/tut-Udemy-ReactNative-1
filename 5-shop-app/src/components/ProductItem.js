@@ -59,10 +59,14 @@ const styles = StyleSheet.create({
 });
 
 const ProductItem = ({ item, handleSelect, children }) => {
-  let TouchableComponent = TouchableOpacity;
+  let TouchableComponent = View;
 
-  if (Platform.OS === 'android' && Platform.Version >= 21) {
-    TouchableComponent = TouchableNativeFeedback;
+  if (handleSelect) {
+    if (Platform.OS === 'android' && Platform.Version >= 21) {
+      TouchableComponent = TouchableNativeFeedback;
+    } else {
+      TouchableComponent = TouchableOpacity;
+    }
   }
 
   return (

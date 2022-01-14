@@ -4,7 +4,7 @@ import { useDispatch } from 'react-redux';
 import { HeaderButtons, Item } from 'react-navigation-header-buttons';
 
 import { HeaderButton } from '../../components';
-import { addProduct } from '../../store/products';
+import { addProduct, updateProduct } from '../../store/products';
 
 const EditProduct = ({ route, navigation }) => {
   const dispatch = useDispatch();
@@ -30,21 +30,34 @@ const EditProduct = ({ route, navigation }) => {
               Platform.OS === 'android' ? 'md-checkmark' : 'ios-checkmark'
             }
             onPress={() => {
-              dispatch(
-                addProduct({
-                  ...(currentProduct || {}),
-                  title,
-                  imageUrl,
-                  price,
-                  description,
-                })
-              );
+              if (currentProduct) {
+                dispatch(
+                  updateProduct(currentProduct.id, {
+                    ...(currentProduct || {}),
+                    title,
+                    imageUrl,
+                    price,
+                    description,
+                  })
+                );
+              } else {
+                dispatch(
+                  addProduct({
+                    title,
+                    imageUrl,
+                    price,
+                    description,
+                  })
+                );
+              }
+
+              navigation.goBack();
             }}
           />
         </HeaderButtons>
       ),
     });
-  }, [navigation]);
+  }, [navigation, title, imageUrl, price, description]);
 
   return (
     <ScrollView>
