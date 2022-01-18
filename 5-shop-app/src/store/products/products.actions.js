@@ -46,6 +46,8 @@ export const fetchProducts = () => {
 };
 
 export const addProduct = (product) => {
+  console.log(product);
+
   return async (dispatch) => {
     try {
       const response = await fetch(PRODUCTS_DB, {
@@ -69,16 +71,32 @@ export const addProduct = (product) => {
 };
 
 export const updateProduct = (productId, product) => {
-  return {
-    type: UPDATE_PRODUCT,
-    productId,
-    product,
+  return async (dispatch) => {
+    await fetch(`${FIREBASE_APP}/products/${productId}.json`, {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(product),
+    });
+
+    dispatch({
+      type: UPDATE_PRODUCT,
+      productId,
+      product,
+    });
   };
 };
 
 export const deleteProduct = (productId) => {
-  return {
-    type: DELETE_PRODUCT,
-    productId,
+  return async (dispatch) => {
+    await fetch(`${FIREBASE_APP}/products/${productId}.json`, {
+      method: 'DELETE',
+    });
+
+    dispatch({
+      type: DELETE_PRODUCT,
+      productId,
+    });
   };
 };

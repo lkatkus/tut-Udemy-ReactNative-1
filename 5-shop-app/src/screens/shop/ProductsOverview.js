@@ -16,6 +16,7 @@ import { colors } from '../../constants';
 
 const ProductsOverview = (props) => {
   const [isLoading, setIsLoading] = React.useState(false);
+  const [isRefreshing, setIsRefreshing] = React.useState(false);
   const [error, setError] = React.useState(null);
 
   const { navigation } = props;
@@ -23,7 +24,7 @@ const ProductsOverview = (props) => {
   const products = useSelector((store) => store.products.availableProducts);
 
   const loadProducts = React.useCallback(async () => {
-    setIsLoading(true);
+    setIsRefreshing(true);
     setError(null);
 
     try {
@@ -31,15 +32,17 @@ const ProductsOverview = (props) => {
     } catch (e) {
       setError(e.message);
     }
-    setIsLoading(false);
+    setIsRefreshing(false);
   }, [dispatch, setIsLoading, setError]);
 
   React.useEffect(() => {
-    const focusSub = props.navigation.addListener('focus', loadProducts);
+    const unsubscribe = props.navigation.addListener('focus', async () => {
+      setIsLoading(true);
+      await loadProducts();
+      setIsLoading(false);
+    });
 
-    return () => {
-      focusSub.remove();
-    };
+    return unsubscribe;
   }, []);
 
   if (error) {
@@ -71,6 +74,8 @@ const ProductsOverview = (props) => {
     <View>
       <View>
         <FlatList
+          refreshing={isRefreshing}
+          onRefresh={loadProducts}
           data={products}
           renderItem={(product) => {
             return (
@@ -104,7 +109,11 @@ const ProductsOverview = (props) => {
 };
 
 const styles = StyleSheet.create({
-  centered: { flex: 1, justifyContent: 'center', alignItems: 'center' },
+  centered: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
   errorText: {
     marginBottom: 10,
   },

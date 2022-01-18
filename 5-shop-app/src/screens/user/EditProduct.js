@@ -1,5 +1,6 @@
 import React from 'react';
 import {
+  ActivityIndicator,
   View,
   ScrollView,
   KeyboardAvoidingView,
@@ -11,6 +12,7 @@ import { HeaderButtons, Item } from 'react-navigation-header-buttons';
 
 import { HeaderButton, Input } from '../../components';
 import { addProduct, updateProduct } from '../../store/products';
+import { colors } from '../../constants';
 
 const FORM_VALUE_UPDATE = 'FORM_VALUE_UPDATE';
 
@@ -42,6 +44,9 @@ const formReducer = (state, action) => {
 };
 
 const EditProduct = ({ route, navigation }) => {
+  const [isLoading, setIsLoading] = React.useState(false);
+  const [error, setError] = React.useState(null);
+
   const currentProduct = route?.params?.product;
 
   const dispatch = useDispatch();
@@ -82,7 +87,7 @@ const EditProduct = ({ route, navigation }) => {
             iconName={
               Platform.OS === 'android' ? 'md-checkmark' : 'ios-checkmark'
             }
-            onPress={() => {
+            onPress={async () => {
               if (!formState.isValid) {
                 Alert.alert(
                   'Wrong input!',
@@ -92,24 +97,51 @@ const EditProduct = ({ route, navigation }) => {
                 return;
               }
 
-              if (currentProduct) {
-                dispatch(
-                  updateProduct(currentProduct.id, {
-                    ...(currentProduct || {}),
-                    ...formState.values,
-                  })
-                );
-              } else {
-                dispatch(addProduct(formState.values));
+              setError(null);
+              setIsLoading(true);
+
+              try {
+                if (currentProduct) {
+                  await dispatch(
+                    updateProduct(currentProduct.id, {
+                      ...(currentProduct || {}),
+                      ...formState.values,
+                    })
+                  );
+                } else {
+                  await dispatch(addProduct(formState.values));
+                }
+
+                navigation.goBack();
+              } catch (e) {
+                setError(e.message);
               }
 
-              navigation.goBack();
+              setIsLoading(false);
             }}
           />
         </HeaderButtons>
       ),
     });
   }, [navigation, formState]);
+
+  React.useEffect(() => {
+    if (error) {
+      Alert.alert(
+        'An error occurred!',
+        'Something went wrong trying to save your product',
+        [{ text: 'Okay' }]
+      );
+    }
+  }, [error]);
+
+  if (isLoading) {
+    return (
+      <View style={styles.centered}>
+        <ActivityIndicator size='large' color={colors.secondary} />
+      </View>
+    );
+  }
 
   return (
     <KeyboardAvoidingView behavior='padding' keyboardVerticalOffset={100}>
@@ -137,7 +169,9 @@ const EditProduct = ({ route, navigation }) => {
           {!currentProduct && (
             <Input
               label='Price'
-              onChange={handleTextChange('price')}
+              onChange={(value, isValid) =>
+                handleTextChange('price')(Number(value), isValid)
+              }
               keyboardType='decimal-pad'
               required
               min={0}
@@ -166,6 +200,11 @@ const EditProduct = ({ route, navigation }) => {
 const styles = StyleSheet.create({
   form: {
     margin: 20,
+  },
+  centered: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });
 
