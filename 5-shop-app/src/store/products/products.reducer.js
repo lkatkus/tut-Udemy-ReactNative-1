@@ -3,20 +3,33 @@ import {
   ADD_PRODUCT,
   UPDATE_PRODUCT,
   DELETE_PRODUCT,
+  SET_PRODUCTS,
 } from './products.actions';
 import Product from '../../models/product';
 
 const initialState = {
-  availableProducts: PRODUCTS,
-  userProducts: PRODUCTS.filter((prod) => prod.ownerId === 'u1'),
+  availableProducts: [],
+  userProducts: [],
 };
+
+// const initialState = {
+//   availableProducts: PRODUCTS,
+//   userProducts: PRODUCTS.filter((prod) => prod.ownerId === 'u1'),
+// };
 
 export const reducer = (state = initialState, action) => {
   switch (action.type) {
+    case SET_PRODUCTS: {
+      return {
+        ...state,
+        availableProducts: action.products,
+        userProducts: action.products.filter((prod) => prod.ownerId === 'u1'),
+      };
+    }
     case ADD_PRODUCT: {
       const productData = action.product;
       const newProduct = new Product(
-        new Date().toString(),
+        productData.id,
         'u1',
         productData.title,
         productData.imageUrl,

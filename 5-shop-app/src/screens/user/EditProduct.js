@@ -112,7 +112,7 @@ const EditProduct = ({ route, navigation }) => {
   }, [navigation, formState]);
 
   return (
-    <KeyboardAvoidingView behavior='padding' keyboardVerticalOffset={20}>
+    <KeyboardAvoidingView behavior='padding' keyboardVerticalOffset={100}>
       <ScrollView>
         <View style={styles.form}>
           <Input
