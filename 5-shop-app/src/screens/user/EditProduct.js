@@ -2,8 +2,7 @@ import React from 'react';
 import {
   View,
   ScrollView,
-  Text,
-  TextInput,
+  KeyboardAvoidingView,
   StyleSheet,
   Alert,
 } from 'react-native';
@@ -113,52 +112,54 @@ const EditProduct = ({ route, navigation }) => {
   }, [navigation, formState]);
 
   return (
-    <ScrollView>
-      <View style={styles.form}>
-        <Input
-          label='Title'
-          onChange={handleTextChange('title')}
-          autoCorrect
-          autoCapitalize='sentences'
-          errorText='Please enter a valid title!'
-          initialValue={currentProduct?.title || ''}
-          initialIsValid={currentProduct ? true : false}
-        />
-
-        <Input
-          label='Image URL'
-          onChange={handleTextChange('imageUrl')}
-          required
-          errorText='Please enter a valid image url!'
-          initialValue={currentProduct?.imageUrl || ''}
-          initialIsValid={currentProduct ? true : false}
-        />
-
-        {!currentProduct && (
+    <KeyboardAvoidingView behavior='padding' keyboardVerticalOffset={20}>
+      <ScrollView>
+        <View style={styles.form}>
           <Input
-            label='Price'
-            onChange={handleTextChange('price')}
-            keyboardType='decimal-pad'
-            required
-            min={0}
-            errorText='Please enter a valid price!'
-            initialValue={currentProduct?.price || ''}
+            label='Title'
+            onChange={handleTextChange('title')}
+            autoCorrect
+            autoCapitalize='sentences'
+            errorText='Please enter a valid title!'
+            initialValue={currentProduct?.title || ''}
             initialIsValid={currentProduct ? true : false}
           />
-        )}
 
-        <Input
-          label='Description'
-          onChange={handleTextChange('description')}
-          multiline
-          numberOfLines={3}
-          required
-          errorText='Please enter a valid description!'
-          initialValue={currentProduct?.description || ''}
-          initialIsValid={currentProduct ? true : false}
-        />
-      </View>
-    </ScrollView>
+          <Input
+            label='Image URL'
+            onChange={handleTextChange('imageUrl')}
+            required
+            errorText='Please enter a valid image url!'
+            initialValue={currentProduct?.imageUrl || ''}
+            initialIsValid={currentProduct ? true : false}
+          />
+
+          {!currentProduct && (
+            <Input
+              label='Price'
+              onChange={handleTextChange('price')}
+              keyboardType='decimal-pad'
+              required
+              min={0}
+              errorText='Please enter a valid price!'
+              initialValue={currentProduct?.price || ''}
+              initialIsValid={currentProduct ? true : false}
+            />
+          )}
+
+          <Input
+            label='Description'
+            onChange={handleTextChange('description')}
+            multiline
+            numberOfLines={3}
+            required
+            errorText='Please enter a valid description!'
+            initialValue={currentProduct?.description || ''}
+            initialIsValid={currentProduct ? true : false}
+          />
+        </View>
+      </ScrollView>
+    </KeyboardAvoidingView>
   );
 };
 
